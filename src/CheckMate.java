@@ -1,0 +1,2 @@
+public class CheckMate {
+}
