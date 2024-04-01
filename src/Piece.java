@@ -3,10 +3,10 @@ public class Piece {
     private int team;
     private Move move;
 
-    public Piece(String name, int team, Move move) {
+    public Piece(String name, int team) {
         this.name = name;
         this.team = team;
-        this.move = move;
+        this.move = Move.find(name);
     }
 
     public String getName() {

@@ -19,29 +19,31 @@ public class Board {
 
 
     public static void piecesBuilder(){
-        pieces[0] = new Piece("Rook",1,Move.find("Rook"));
-        pieces[1] = new Piece("Knight",1,Move.find("Knight"));
-        pieces[2] = new Piece("Bishop",1,Move.find("Bishop"));
-        pieces[3] = new Piece("Queen",1,Move.find("Queen"));
-        pieces[4] = new Piece("King",1,Move.find("King"));
-        pieces[5] = new Piece("Bishop",1,Move.find("Bishop"));
-        pieces[6] = new Piece("Knight",1,Move.find("Knight"));
-        pieces[7] = new Piece("Rook",1,Move.find("Rook"));
+        //WHITE TEAM
+        pieces[0] = new Piece("Rook",1);
+        pieces[1] = new Piece("Knight",1);
+        pieces[2] = new Piece("Bishop",1);
+        pieces[3] = new Piece("Queen",1);
+        pieces[4] = new Piece("King",1);
+        pieces[5] = new Piece("Bishop",1);
+        pieces[6] = new Piece("Knight",1);
+        pieces[7] = new Piece("Rook",1);
         for (int i = 8; i <= 15; i++){
-            pieces [i] = new Piece("Pawn",1,Move.find("wPawn"));
+            pieces [i] = new Piece("Pawn",1);
         }
 
-        for (int i = 48; i <= 55; i++){
-            pieces [i] = new Piece("Pawn",2,Move.find("bPawn"));
+        //BLACK TEAM
+        for (int i = 16; i <= 23; i++){
+            pieces [i] = new Piece("Pawn",2);
         }
-        pieces[56] = new Piece("Rook",2,Move.find("Rook"));
-        pieces[57] = new Piece("Knight",2,Move.find("Knight"));
-        pieces[58] = new Piece("Bishop",2,Move.find("Bishop"));
-        pieces[59] = new Piece("Queen",2,Move.find("Queen"));
-        pieces[60] = new Piece("King",2,Move.find("King"));
-        pieces[61] = new Piece("Bishop",2,Move.find("Bishop"));
-        pieces[62] = new Piece("Knight",2,Move.find("Knight"));
-        pieces[63] = new Piece("Rook",2,Move.find("Rook"));
+        pieces[24] = new Piece("Rook",2);
+        pieces[25] = new Piece("Knight",2);
+        pieces[26] = new Piece("Bishop",2);
+        pieces[27] = new Piece("Queen",2);
+        pieces[28] = new Piece("King",2);
+        pieces[29] = new Piece("Bishop",2);
+        pieces[30] = new Piece("Knight",2);
+        pieces[31] = new Piece("Rook",2);
     }
 
     public static void squareBuilder(){
@@ -53,14 +55,14 @@ public class Board {
         int totalPieces = 0;
         for (;rank <= 8; rank++){
             for (;file <= 'H'; file++){
-                if (totalPieces >= 16 && totalPieces <= 47){
+                if (totalSquares >= 16 && totalPieces <= 47){
                     squares.put(new Square(file, rank, x, y), null) ;
                 }
                 else{
                     squares.put(new Square(file, rank, x, y), pieces[totalPieces]);
+                    totalPieces++;
                 }
                 totalSquares++;
-                totalPieces++;
                 x += 100; //
             }
             file = 'A';
