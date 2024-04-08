@@ -116,11 +116,11 @@ public class Move {
         int r = pieceRank; char f = pieceFile;
         if(p.getTeam().equals("White")){
             if(p.getPawn()){
-                r++; pieceCheckPawn(r,f);
-                if(!stop){r++; pieceCheckPawn(r,f);}
+                r++; pieceCheckPawn(r,f,p);
+                if(!stop){r++; pieceCheckPawn(r,f,p);}
             }
             else {
-                r++; pieceCheckPawn(r,f);
+                r++; pieceCheckPawn(r,f,p);
             }
             r = pieceRank;
             r++; f++; pieceCheck(r,f,p);
@@ -128,11 +128,11 @@ public class Move {
         }
         else{
             if(p.getPawn()){
-                r--; pieceCheckPawn(r,f);
-                if(!stop){r--; pieceCheckPawn(r,f);}
+                r--; pieceCheckPawn(r,f,p);
+                if(!stop){r--; pieceCheckPawn(r,f,p);}
             }
             else {
-                r--; pieceCheckPawn(r,f);
+                r--; pieceCheckPawn(r,f,p);
             }
             r = pieceRank;
             r--; f++; pieceCheck(r,f,p);
@@ -145,21 +145,21 @@ public class Move {
 
         if (s.getPiece().equals(Square.neutralPiece)){
             //activate yellow
-            if(!p.getName().equals("Pawn")){s.activateYellow();}
+            if(!p.getName().equals("Pawn")){s.activateYellow(p);}
         } else if (!(s.getPiece().getTeam().equals(p.getTeam()))){
             // activate red
-            s.activateRed();
+            s.activateRed(p);
             stop = true;
         }
         else if (p.getTeam().equals(s.getPiece().getTeam())){
             stop = true;
         }
     }
-    private static void pieceCheckPawn(int r, char f){
+    private static void pieceCheckPawn(int r, char f, Piece p){
         Square  s = Square.getSquare(r,f);
         if (s.getPiece().equals(Square.neutralPiece)){
             //activate yellow
-            s.activateYellow();
+            s.activateYellow(p);
         }
     }
 }

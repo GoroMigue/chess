@@ -42,6 +42,7 @@ public class Board {
         Piece.piecesBuilder();
         Square.squareBuilder();
         addPieces();
+        Player.setPieces();
         board.revalidate();
         board.repaint();
 
@@ -61,9 +62,5 @@ public class Board {
         if (index < 64){
             button.setBounds(Board.boardXY[index][0],Board.boardXY[index][1],111,111);
         }}
-//
-    public static void boardBuilder(){
-        new Board();
-    }
 
 }

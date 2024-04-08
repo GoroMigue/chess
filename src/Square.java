@@ -33,7 +33,7 @@ public class Square {
         this.imageRed = new ImageIcon(ImR);
 
         this.boardPosition = Board.position;
-        System.out.println(this.boardPosition);
+
         Board.setBounds(boardPosition, this.button);
         this.button.setEnabled(false);
         this.button.setVisible(false);
@@ -44,20 +44,11 @@ public class Square {
         this.button.setFocusPainted(false);
         this.button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (Piece.selected.getName().equals("Pawn")){
-                    Piece.selected.setPawn();
-                }
-                if (Square.this.kill){
-                    Player.getPlayer().kill(Square.this.getPiece());
-                    Square.this.kill = false;
-                }
                 teleportPiece(Square.this);
                 System.out.println(Square.this.file + " " + Square.this.rank + " Board Position: " + Square.this.boardPosition);
                 deactivateAll();
                 Piece.move = false;
-
             }});
-
         Board.position++;
         Board.addButton(this.button);
     }
@@ -70,16 +61,39 @@ public class Square {
         return this.piece; }
     public void setPiece(Piece piece) {
         this.piece = piece; }
-    public void activateRed(){
-        this.button.setEnabled(true);
-        this.button.setIcon(imageRed);
-        this.button.setVisible(true);
-        this.kill = true;
+    public void activateRed(Piece p){
+        if (CheckMate.checkingMate){
+            Piece.selected = p;
+            this.kill = true;
+            teleportPiece(this);
+        }
+        else{
+            this.button.setEnabled(true);
+            this.button.setIcon(imageRed);
+            this.button.setVisible(true);
+            this.kill = true;
+        }
+        if (this.piece.getName().equals("King") && CheckMate.checking){
+            if (this.piece.getTeam().equals(Player.turn)){
+                CheckMate.teamCheck = true;
+            }
+            else{
+                CheckMate.enemyCheck = true;
+            }
+        }
     }
-    public void activateYellow(){
-        this.button.setEnabled(true);
-        this.button.setIcon(imageYellow);
-        this.button.setVisible(true);
+    public void activateYellow(Piece p){
+        if (CheckMate.checkingMate){
+            Piece.selected = p;
+            this.kill = false;
+            teleportPiece(this);
+        }
+        else{
+            this.button.setEnabled(true);
+            this.button.setIcon(imageYellow);
+            this.button.setVisible(true);
+            this.kill = false;
+        }
     }
     public static void deactivateAll(){
         for (ArrayList<Square> r : squares){
@@ -90,11 +104,51 @@ public class Square {
         }
     }
     public static void teleportPiece(Square square){
-            getSquare(Piece.selected).setPiece(neutralPiece);
-            square.setPiece(Piece.selected);
+        Square sq = getSquare(Piece.selected);
+        Piece p = square.getPiece();
+        sq.setPiece(neutralPiece);
+        square.setPiece(Piece.selected);
+        CheckMate.check();
+
+        if (CheckMate.teamCheck){
+            square.setPiece(neutralPiece);
+            sq.setPiece(Piece.selected);
+            square.setPiece(p);
+        }
+        else if (CheckMate.checkingMate) {
+            CheckMate.checkMove = true;
+            square.setPiece(neutralPiece);
+            sq.setPiece(Piece.selected);
+            square.setPiece(p);
+        }
+        else {
             Board.setBounds(square.boardPosition, Piece.selected.getButton());
+            if (Piece.selected.getName().equals("Pawn")) {
+                Piece.selected.setPawn();
+            }
+            if (square.kill) {
+                Player.getPlayer().kill(p);
+            }
+            Player.nextTurn();
+        }
+
+        CheckMate.teamCheck = false;
+        square.kill = false;
     }
 //
+    public static ArrayList<ArrayList<Square>> generateCopy(){
+        ArrayList<ArrayList<Square>> squaresCopy = new ArrayList<>(squares.size());
+        for (ArrayList<Square> ranks : squares) {
+            ArrayList<Square> files = new ArrayList<>(ranks.size());
+            for (Square square : ranks) {
+                files.add(new Square(square.getFile(), square.getRank(), square.getPiece()));
+            }
+            squaresCopy.add(files);
+        }
+        return squaresCopy;
+    }
+
+
     public static Square getSquare(Piece piece) {
         for (ArrayList<Square> r : squares ) {
             for (Square s : r ) {
@@ -125,11 +179,9 @@ public class Square {
             for (char file = 'A';file <= 'H'; file++){
                 int crank = rank + 1;
                 if (rank >= 2 && rank < 6){
-                    System.out.println(crank + " " + file + " : " + neutralPiece.getName());
                     squares.get(irank).add(new Square(file, crank,neutralPiece));
                 }
                 else{
-                    System.out.println(crank + " " + file + " : " + Piece.getPieces()[totalPieces].getName());
                     squares.get(irank).add(new Square(file, crank, Piece.getPieces()[totalPieces]));
                     totalPieces++;
                 }

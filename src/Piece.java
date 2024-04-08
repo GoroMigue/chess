@@ -37,24 +37,19 @@ public class Piece {
         this.button.setFocusPainted(false);
         this.button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-                if (Player.turn.equals(team)){
-                    if (!move){
-                        selected = Piece.this;
-                        Move.move(Piece.this);
-                        move = true;
-                        System.out.println("activate");
-                    }
-                    else{
-                        selected = Piece.this;
-                        Square.deactivateAll();
-                        System.out.println("deactivate");
-                        move = false;
-                    }
+                if (Player.turn.equals(team) && !Piece.selected.equals(Piece.this)){
+                    Square.deactivateAll();
+                    selected = Piece.this;
+                    Move.move(Piece.this);
                     System.out.println(selected.getName() + " " + Piece.this.team);
                 }
+                else{
+                    if (Player.turn.equals(team)){
+                        Square.deactivateAll();
+                        selected = Square.neutralPiece;
+                    }
+                }
             }});
-
-
         Board.position++;
         if (Board.position == 16){
             Board.position = 48;

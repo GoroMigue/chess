@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Iterator;
 
 public class Player {
@@ -8,10 +9,12 @@ public class Player {
     private String team;
     private int kills = 0;
     private Piece [] enemyPieces;
+    private Piece [] teamPieces;
 //
     public Player(String team){
         this.team = team;
         this.enemyPieces = new Piece[16];
+        this.teamPieces = new Piece[16];
     }
 //
     public void kill(Piece p){
@@ -20,13 +23,33 @@ public class Player {
         enemyPieces[kills] = p;
         kills++;
     }
+    public Piece[] getPieces(){
+        return teamPieces;
+    }
 //
+    public static void setPieces(){
+            white.teamPieces = Arrays.copyOfRange(Piece.getPieces(), 0, 15);
+            black.teamPieces = Arrays.copyOfRange(Piece.getPieces(), 16, 31);
+    }
     public static Player getPlayer(){
         if (turn.equals("White")){
             return white;
         }
         else {
             return black;
+        }
+    }
+    public static void nextTurn(){
+        if (CheckMate.enemyCheck){
+            CheckMate.enemyCheck = false;
+            CheckMate.teamCheck = false;
+            CheckMate.checkMate();
+        }
+        if (turn.equals("White")){
+            turn = "Black";
+        }
+        else {
+            turn = "White";
         }
     }
 }
