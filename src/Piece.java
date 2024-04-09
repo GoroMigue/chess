@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Piece {
-    public static boolean move = false;
     public static Piece selected;
     public static Piece[] pieces;
 //
@@ -37,17 +36,15 @@ public class Piece {
         this.button.setFocusPainted(false);
         this.button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-                if (Player.turn.equals(team) && !Piece.selected.equals(Piece.this)){
+                if (Piece.selected.equals(Piece.this)){
+                    Square.deactivateAll();
+                    selected = Square.neutralPiece;
+                }
+                else if (Player.turn.equals(team)) {
                     Square.deactivateAll();
                     selected = Piece.this;
                     Move.move(Piece.this);
                     System.out.println(selected.getName() + " " + Piece.this.team);
-                }
-                else{
-                    if (Player.turn.equals(team)){
-                        Square.deactivateAll();
-                        selected = Square.neutralPiece;
-                    }
                 }
             }});
         Board.position++;
