@@ -35,16 +35,24 @@ public class Piece {
         this.button.setContentAreaFilled(false);
         this.button.setFocusPainted(false);
         this.button.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e){
-                if (Piece.selected.equals(Piece.this)){
-                    Square.deactivateAll();
-                    selected = Square.neutralPiece;
-                }
-                else if (Player.turn.equals(team)) {
-                    Square.deactivateAll();
-                    selected = Piece.this;
-                    Move.move(Piece.this);
-                    System.out.println(selected.getName() + " " + Piece.this.team);
+            public void actionPerformed(ActionEvent e) {
+                if (Piece.this.team.equals("Promotion")) {
+                    Piece.this.team = Piece.selected.getTeam();
+                    Square sq = Square.getSquare(Piece.selected);
+                    sq.setPiece(Piece.this);
+                    Board.setBounds(sq.boardPosition,Piece.this.getButton());
+                    Piece.selected.getButton().setVisible(false);
+                } else {
+                    if (Piece.selected.equals(Piece.this)) {
+                        Square.deactivateAll();
+                        selected = Square.neutralPiece;
+                    }
+                    else if (Player.turn.equals(team)) {
+                        Square.deactivateAll();
+                        selected = Piece.this;
+                        Move.move(Piece.this);
+                        System.out.println(selected.getName() + " " + Piece.this.team);
+                    }
                 }
             }});
         Board.position++;
@@ -71,6 +79,26 @@ public class Piece {
 //
     public static Piece[] getPieces(){
         return pieces;
+    }
+    public static void pawnPromotion() {
+        JFrame promotion = new JFrame();
+        promotion.setSize(500,250);
+        promotion.setLayout(null);
+        promotion.setUndecorated(true);
+        promotion.setLocationRelativeTo(null);
+        Piece rook = new Piece("Rook", "Promotion");
+        rook.getButton().setBounds(50,50,111,111);
+        Piece knight = new Piece("Knight", "Promotion");
+        rook.getButton().setBounds(100,50,111,111);
+        Piece bishop = new Piece("Bishop", "Promotion");
+        rook.getButton().setBounds(150,50,111,111);
+        Piece queen = new Piece("Queen", "Promotion");
+        rook.getButton().setBounds(200,50,111,111);
+        promotion.add(rook.getButton());
+        promotion.add(knight.getButton());
+        promotion.add(bishop.getButton());
+        promotion.add(queen.getButton());
+        promotion.setVisible(true);
     }
 //
     public static void piecesBuilder(){

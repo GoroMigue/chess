@@ -12,6 +12,7 @@ public class CheckMate {
     // Variable to check if there are no possible movements left
     public static boolean checkMove = false;
 
+    // Check after move or trying to move, activating teamCheck or enemyCheck when it's needed
     public static void check() {
         checking = true;
         Piece[] pieces = Piece.getPieces();
@@ -22,6 +23,7 @@ public class CheckMate {
         checking = false;
     }
 
+    // Check when turn swapping and enemyTeam is activated
     public static void checkMate() {
         checkingMate = true;
         teamCheck = false;
@@ -30,20 +32,22 @@ public class CheckMate {
         Piece[] pieces = Player.getPlayer().getPieces().clone();
         for (Piece p : pieces) {
             Move.move(p);
+            // If there's a possible move, it breaks
             if (checkMove) {
                 break;
             }
         }
         Square.deactivateAll();
+        // If there's no possible move, it ends
         if (!checkMove) {
             deadEnd();
         }
-        teamCheck = false;
         enemyCheck = false;
         teamCheck = false;
         checkingMate = false;
     }
 
+    // Activate when there is no possible movement left
     public static void deadEnd() {
         System.out.println("GAME OVER");
     }

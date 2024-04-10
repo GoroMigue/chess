@@ -124,10 +124,14 @@ public class Square {
             square.setPiece(p);
         }
         else {
-            Board.setBounds(square.boardPosition, Piece.selected.getButton());
             if (Piece.selected.getName().equals("Pawn")) {
                 Piece.selected.setPawn();
+                if (square.getRank() == 1 || square.getRank() == 8){
+                    // Pawn promotion
+                    Piece.pawnPromotion();
+                }
             }
+            Board.setBounds(square.boardPosition, Piece.selected.getButton());
             if (square.kill) {
                 Player.getPlayer().kill(p);
             }
