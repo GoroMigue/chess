@@ -1,9 +1,13 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class Board {
     private static JFrame board;
+    private static JFrame promotion;
+    public static boolean promoting;
     private static JLabel b;
     public static int[][] boardXY = {
             {56, 56},   {167, 56},  {278, 56},  {389, 56},  {500, 56},  {611, 56},  {722, 56},  {833, 56},
@@ -22,8 +26,8 @@ public class Board {
             board.dispose();
         }
         board = new JFrame();
+        board.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         board.setSize(1000,1000);
-        board.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         board.setLayout(null);
         board.setUndecorated(true);
         board.setLocationRelativeTo(null);
@@ -45,6 +49,83 @@ public class Board {
         Player.setPieces();
         board.revalidate();
         board.repaint();
+
+    }
+//
+    public static void promotion(){
+        promoting = true;
+        board.setEnabled(false);
+        board.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        promotion = new JFrame();
+        promotion = new JFrame();
+        promotion.setSize(525,300);
+        promotion.setLayout(null);
+        promotion.setUndecorated(true);
+        promotion.setLocationRelativeTo(null);
+
+        JLabel title = new JLabel("PROMOTION");
+        title.setFont(new Font("Agency FB", Font.BOLD, 80));
+        title.setBounds(100,25,325,60);
+
+        title.setVisible(true);
+
+
+        String team = "";
+        if (Piece.selected.getTeam().equals("White")){
+            team = "White";
+        }
+        else {
+            team = "Black";
+        }
+        Piece rook = new Piece("Rook",team);
+        rook.getButton().setBounds(25,100,100,110);
+        Piece knight = new Piece("Knight",team);
+        knight.getButton().setBounds(150,100,100,110);
+        Piece bishop = new Piece("Bishop",team);
+        bishop.getButton().setBounds(275,100,100,110);
+        Piece queen = new Piece("Queen",team);
+        queen.getButton().setBounds(400,100,100,110);
+
+        JButton noPromotion = new JButton("<html><center>DON'T<br>PROMOTE</center></html");
+        noPromotion.setBackground(new Color(97, 41, 27, 205));
+        noPromotion.setForeground(Color.WHITE);
+        noPromotion.setFont(new Font("Geneva", Font.BOLD, 20));
+        noPromotion.setBounds(200,215,125,75);
+        noPromotion.setVisible(true);
+        noPromotion.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                promotion.dispose();
+                promoting = false;
+                board.setEnabled(true);
+                board.setLocationRelativeTo(null);
+                board.setVisible(true);
+                Player.nextTurn();
+            }});
+
+        promotion.add(title);
+        promotion.add(rook.getButton());
+        promotion.add(knight.getButton());
+        promotion.add(bishop.getButton());
+        promotion.add(queen.getButton());
+        promotion.add(noPromotion);
+        promotion.setVisible(true);
+    }
+    public static void promotePawn(Piece p){
+        Square sq = Square.getSquare(Piece.selected);
+        sq.setPiece(p);
+        promotion.dispose();
+
+        b.remove(Piece.selected.getButton());
+        b.add(p.getButton());
+        setBounds(sq.boardPosition,p.getButton());
+
+        promoting = false;
+        Piece.selected = Square.neutralPiece;
+
+        board.setEnabled(true);
+        board.setLocationRelativeTo(null);
+        board.setVisible(true);
+        Player.nextTurn();
 
     }
 //

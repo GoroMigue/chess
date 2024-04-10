@@ -131,9 +131,12 @@ public class Square {
             if (square.kill) {
                 Player.getPlayer().kill(p);
             }
-            Player.nextTurn();
+            if (Piece.selected.getName().equals("Pawn") && (square.getRank() == 1 || square.getRank() == 8)) {
+                Board.promotion();
+            }
+            else {Player.nextTurn();}
         }
-        Piece.selected = neutralPiece;
+        if (!Board.promoting){Piece.selected = neutralPiece;}
         CheckMate.teamCheck = false;
         square.kill = false;
     }

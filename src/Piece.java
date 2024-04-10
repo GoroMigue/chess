@@ -10,6 +10,7 @@ public class Piece {
     private String name;
     private String team;
     private boolean pawn;
+    private boolean promote;
     private ImageIcon image;
     private JButton button;
 //
@@ -36,15 +37,20 @@ public class Piece {
         this.button.setFocusPainted(false);
         this.button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-                if (Piece.selected.equals(Piece.this)){
-                    Square.deactivateAll();
-                    selected = Square.neutralPiece;
+                if (Board.promoting){
+                    Board.promotePawn(Piece.this);
                 }
-                else if (Player.turn.equals(team)) {
-                    Square.deactivateAll();
-                    selected = Piece.this;
-                    Move.move(Piece.this);
-                    System.out.println(selected.getName() + " " + Piece.this.team);
+                else{
+                    if (Piece.selected.equals(Piece.this)){
+                        Square.deactivateAll();
+                        selected = Square.neutralPiece;
+                    }
+                    else if (Player.turn.equals(team)) {
+                        Square.deactivateAll();
+                        selected = Piece.this;
+                        Move.move(Piece.this);
+                        System.out.println(selected.getName() + " " + Piece.this.team);
+                    }
                 }
             }});
         Board.position++;
@@ -62,8 +68,12 @@ public class Piece {
     public boolean getPawn(){
         return this.pawn;
     }
+    public boolean getPromote() {return this.promote;}
     public JButton getButton(){
         return this.button;
+    }
+    public void setTeam(String t){
+        this.team = t;
     }
     public void setPawn(){
         this.pawn = false;
