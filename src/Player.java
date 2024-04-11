@@ -40,6 +40,8 @@ public class Player {
         }
     }
     public static void nextTurn(){
+        Board.castlingR.setVisible(false);
+        Board.castlingL.setVisible(false);
         if (CheckMate.enemyCheck){
             CheckMate.enemyCheck = false;
             CheckMate.teamCheck = false;

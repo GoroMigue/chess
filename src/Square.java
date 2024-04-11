@@ -93,6 +93,27 @@ public class Square {
             teleportPiece(this);
         }
     }
+//
+    public static Square getSquare(Piece piece) {
+        for (ArrayList<Square> r : squares ) {
+            for (Square s : r ) {
+                if (s.getPiece().equals(piece)) {
+                    return s;
+                }
+            }
+        }
+        return neutralSquare;
+    }
+    public static Square getSquare(int rank,char file){
+        for (ArrayList<Square> r : squares ) {
+            for (Square s : r ) {
+                if (s.getRank() == rank && s.getFile() == file) {
+                    return s;
+                }
+            }
+        }
+        return neutralSquare;
+    }
     public static void deactivateAll(){
         for (ArrayList<Square> r : squares){
             for (Square s : r){
@@ -125,9 +146,7 @@ public class Square {
         }
         else {
             Board.setBounds(square.boardPosition, Piece.selected.getButton());
-            if (Piece.selected.getName().equals("Pawn")) {
-                Piece.selected.setPawn();
-            }
+            Piece.selected.setMove();
             if (square.kill) {
                 Player.getPlayer().kill(p);
             }
@@ -139,27 +158,6 @@ public class Square {
         if (!Board.promoting){Piece.selected = neutralPiece;}
         CheckMate.teamCheck = false;
         square.kill = false;
-    }
-//
-    public static Square getSquare(Piece piece) {
-        for (ArrayList<Square> r : squares ) {
-            for (Square s : r ) {
-                if (s.getPiece().equals(piece)) {
-                    return s;
-                }
-            }
-        }
-        return neutralSquare;
-    }
-    public static Square getSquare(int rank,char file){
-        for (ArrayList<Square> r : squares ) {
-            for (Square s : r ) {
-                if (s.getRank() == rank && s.getFile() == file) {
-                    return s;
-                }
-            }
-        }
-        return neutralSquare;
     }
 //
     public static void squareBuilder(){

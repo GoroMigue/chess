@@ -108,6 +108,34 @@ public class Move {
         r++; pieceCheck(r,f,p);
         r++; pieceCheck(r,f,p);
 
+        if (!CheckMate.checking && p.getMove()){
+            r = piece.getRank();
+            f = 'A';
+            Square a = Square.getSquare(r,f);
+            f++;
+            Square b = Square.getSquare(r,f);
+            f++;
+            Square c = Square.getSquare(r,f);
+            f++;
+            Square d = Square.getSquare(r,f);
+            f++;
+            Square e = Square.getSquare(r,f);
+            f++;
+            Square t = Square.getSquare(r,f);
+            f++;
+            Square g = Square.getSquare(r,f);
+            f++;
+            Square h = Square.getSquare(r,f);
+
+            if (a.getPiece().getMove() && p.getMove() && b.getPiece().equals(Square.neutralPiece)
+                    && c.getPiece().equals(Square.neutralPiece) && d.getPiece().equals(Square.neutralPiece)) {
+                Board.castlingButton("Right", a, b, c, d, e);
+            }
+            if (p.getMove() && h.getPiece().getMove() && t.getPiece().equals(Square.neutralPiece)
+                    && g.getPiece().equals(Square.neutralPiece)) {
+                Board.castlingButton("Left", e, t, g, h, null);
+            }
+        }
     }
     private static void pawnMove(Piece p) {
         Square piece = Square.getSquare(p);
@@ -115,7 +143,7 @@ public class Move {
         char pieceFile = piece.getFile();
         int r = pieceRank; char f = pieceFile;
         if(p.getTeam().equals("White")){
-            if(p.getPawn()){
+            if(p.getMove()){
                 r++; pieceCheckPawn(r,f,p);
                 if(!stop){r++; pieceCheckPawn(r,f,p);}
             }
@@ -127,7 +155,7 @@ public class Move {
             f--;f--; pieceCheck(r,f,p);
         }
         else{
-            if(p.getPawn()){
+            if(p.getMove()){
                 r--; pieceCheckPawn(r,f,p);
                 if(!stop){r--; pieceCheckPawn(r,f,p);}
             }
@@ -140,6 +168,7 @@ public class Move {
         }
         stop = false;
     }
+//
     private static void pieceCheck(int r, char f, Piece p){
         Square  s = Square.getSquare(r,f);
 
@@ -161,5 +190,31 @@ public class Move {
             //activate yellow
             s.activateYellow(p);
         }
+    }
+    public static void castling(Square a, Square b , Square c, Square d, Square e){
+        Piece rook = a.getPiece();
+        rook.setMove();
+        Piece king = e.getPiece();
+        king.setMove();
+        Board.setBounds(c.boardPosition,king.getButton());
+        Board.setBounds(d.boardPosition,rook.getButton());
+
+        a.setPiece(Square.neutralPiece);
+        c.setPiece(king);
+        d.setPiece(rook);
+        e.setPiece(Square.neutralPiece);
+    }
+    public static void castling(Square e, Square f , Square g, Square h){
+        Piece rook = h.getPiece();
+        rook.setMove();
+        Piece king = e.getPiece();
+        king.setMove();
+        Board.setBounds(f.boardPosition,rook.getButton());
+        Board.setBounds(g.boardPosition,king.getButton());
+
+        e.setPiece(Square.neutralPiece);
+        f.setPiece(rook);
+        g.setPiece(king);
+        h.setPiece(Square.neutralPiece);
     }
 }
