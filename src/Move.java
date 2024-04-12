@@ -166,6 +166,24 @@ public class Move {
             r--; f++; pieceCheck(r,f,p);
             f--;f--; pieceCheck(r,f,p);
         }
+
+        if (p.getEnPassant()) {
+            r = pieceRank;
+            f = pieceFile; f++;
+            piece = Square.getSquare(r,f);
+            if (piece.getPiece().getName().equals("Pawn")){
+                r++;
+                Square.selected = piece;
+                Square.getSquare(r,f).activateRed(p);
+            }
+            r--; f--; f--;
+            piece = Square.getSquare(r,f);
+            if (piece.getPiece().getName().equals("Pawn")){
+                r++;
+                Square.selected = piece;
+                Square.getSquare(r,f).activateRed(p);
+            }
+        }
         stop = false;
     }
 //
@@ -189,6 +207,26 @@ public class Move {
         if (s.getPiece().equals(Square.neutralPiece)){
             //activate yellow
             s.activateYellow(p);
+        }
+        else {
+            stop = true;
+        }
+    }
+    public static void enPassant(Piece p, Square square){
+        if (p.getMove() && p.getName().equals("Pawn")
+                && (square.getRank() == 4 || square.getRank() == 5)){
+            int r = square.getRank();
+            char f = square.getFile();
+            f++;
+            Piece piece = Square.getSquare(r,f).getPiece();
+            if (!piece.getTeam().equals(p.getTeam())){
+                piece.setEnPassant(true);
+            }
+            f--;f--;
+            piece = Square.getSquare(r,f).getPiece();
+            if (!piece.getTeam().equals(p.getTeam())){
+                piece.setEnPassant(true);
+            }
         }
     }
     public static void castling(Square a, Square b , Square c, Square d, Square e){

@@ -10,6 +10,7 @@ public class Piece {
     private String name;
     private String team;
     private boolean move;
+    private boolean enPassant;
     private ImageIcon image;
     private JButton button;
 //
@@ -36,6 +37,7 @@ public class Piece {
             public void actionPerformed(ActionEvent e){
                 Board.castlingR.setVisible(false);
                 Board.castlingL.setVisible(false);
+                Piece.selected.setEnPassant(false);
                 if (Board.promoting){
                     Board.promotePawn(Piece.this);
                 }
@@ -69,6 +71,12 @@ public class Piece {
     }
     public JButton getButton(){
         return this.button;
+    }
+    public boolean getEnPassant(){
+        return enPassant;
+    }
+    public void setEnPassant(Boolean b){
+        this.enPassant = b;
     }
     public void setTeam(String t){
         this.team = t;

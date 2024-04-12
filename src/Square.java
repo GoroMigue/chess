@@ -9,6 +9,7 @@ public class Square {
     public static ArrayList<ArrayList<Square>> squares = new ArrayList<>();
     public static Piece neutralPiece = new Piece("Neutral","Neutral");
     public static Square neutralSquare;
+    public static Square selected;
 //
     private char file;
     private int rank;
@@ -128,6 +129,13 @@ public class Square {
         sq.setPiece(neutralPiece);
         square.setPiece(Piece.selected);
 
+        if (Piece.selected.getEnPassant()) {
+            p = Square.selected.getPiece();
+            p.getButton().setVisible(false);
+            Piece.selected.setEnPassant(false);
+            Square.selected.setPiece(neutralPiece);
+        }
+
         if (CheckMate.checkingMateChecking) {CheckMate.checkingMate = false;}
         CheckMate.check();
         if (CheckMate.checkingMateChecking) {
@@ -146,6 +154,7 @@ public class Square {
         }
         else {
             Board.setBounds(square.boardPosition, Piece.selected.getButton());
+            Move.enPassant(Piece.selected, square);
             Piece.selected.setMove();
             if (square.kill) {
                 Player.getPlayer().kill(p);
@@ -158,6 +167,7 @@ public class Square {
         if (!Board.promoting){Piece.selected = neutralPiece;}
         CheckMate.teamCheck = false;
         square.kill = false;
+
     }
 //
     public static void squareBuilder(){

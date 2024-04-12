@@ -38,7 +38,6 @@ public class CheckMate {
         if (!checkMove) {
             deadEnd();
         }
-        teamCheck = false;
         enemyCheck = false;
         teamCheck = false;
         checkingMate = false;
