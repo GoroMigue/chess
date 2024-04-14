@@ -37,7 +37,6 @@ public class Piece {
             public void actionPerformed(ActionEvent e){
                 Board.castlingR.setVisible(false);
                 Board.castlingL.setVisible(false);
-                Piece.selected.setEnPassant(false);
                 if (Board.promoting){
                     Board.promotePawn(Piece.this);
                 }

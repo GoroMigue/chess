@@ -14,7 +14,7 @@ public class Move {
         Square piece = Square.getSquare(p);
         int pieceRank = piece.getRank();
         char pieceFile = piece.getFile();
-
+        stop = false;
         for (int r = pieceRank + 1; r <= 8; r++){
             pieceCheck(r,pieceFile,p);
             if(stop){break;}
@@ -58,7 +58,7 @@ public class Move {
         Square piece = Square.getSquare(p);
         int pieceRank = piece.getRank();
         char pieceFile = piece.getFile();
-
+        stop = false;
         int r = pieceRank; char f = pieceFile;
         for (r++; r <= 8; r++){
             f++;
@@ -96,9 +96,12 @@ public class Move {
         bishopMove(p); rookMove(p);
     }
     private static void kingMove(Piece p) {
+
         Square piece = Square.getSquare(p);
         int r = piece.getRank();
         char f = piece.getFile();
+        r = piece.getRank();
+        f = piece.getFile();
         r++; pieceCheck(r,f,p);
         f--; pieceCheck(r,f,p);
         r--; pieceCheck(r,f,p);
@@ -108,7 +111,7 @@ public class Move {
         r++; pieceCheck(r,f,p);
         r++; pieceCheck(r,f,p);
 
-        if (!CheckMate.checking && p.getMove()){
+        if (!CheckMate.checking && !CheckMate.checkingMate && p.getMove()){
             r = piece.getRank();
             f = 'A';
             Square a = Square.getSquare(r,f);
@@ -127,13 +130,15 @@ public class Move {
             f++;
             Square h = Square.getSquare(r,f);
 
-            if (a.getPiece().getMove() && p.getMove() && b.getPiece().equals(Square.neutralPiece)
-                    && c.getPiece().equals(Square.neutralPiece) && d.getPiece().equals(Square.neutralPiece)) {
-                Board.castlingButton("Right", a, b, c, d, e);
-            }
-            if (p.getMove() && h.getPiece().getMove() && t.getPiece().equals(Square.neutralPiece)
-                    && g.getPiece().equals(Square.neutralPiece)) {
-                Board.castlingButton("Left", e, t, g, h, null);
+            if (!CheckMate.teamCheck){
+                if (a.getPiece().getMove() && p.getMove() && b.getPiece().equals(Square.neutralPiece)
+                        && c.getPiece().equals(Square.neutralPiece) && d.getPiece().equals(Square.neutralPiece)) {
+                    Board.castlingButton("Right", a, b, c, d, e);
+                }
+                if (p.getMove() && h.getPiece().getMove() && t.getPiece().equals(Square.neutralPiece)
+                        && g.getPiece().equals(Square.neutralPiece)) {
+                    Board.castlingButton("Left", e, t, g, h, null);
+                }
             }
         }
     }
@@ -142,6 +147,7 @@ public class Move {
         int pieceRank = piece.getRank();
         char pieceFile = piece.getFile();
         int r = pieceRank; char f = pieceFile;
+        stop = false;
         if(p.getTeam().equals("White")){
             if(p.getMove()){
                 r++; pieceCheckPawn(r,f,p);
@@ -169,20 +175,11 @@ public class Move {
 
         if (p.getEnPassant()) {
             r = pieceRank;
-            f = pieceFile; f++;
-            piece = Square.getSquare(r,f);
-            if (piece.getPiece().getName().equals("Pawn")){
-                r++;
-                Square.selected = piece;
-                Square.getSquare(r,f).activateRed(p);
-            }
-            r--; f--; f--;
-            piece = Square.getSquare(r,f);
-            if (piece.getPiece().getName().equals("Pawn")){
-                r++;
-                Square.selected = piece;
-                Square.getSquare(r,f).activateRed(p);
-            }
+            f = pieceFile;
+            f++;
+            pieceCheckEnPassant(r,f,p);
+            f--;f--;
+            pieceCheckEnPassant(r,f,p);
         }
         stop = false;
     }
@@ -212,47 +209,96 @@ public class Move {
             stop = true;
         }
     }
+    private static void pieceCheckEnPassant(int r, char f, Piece p){
+        Square  s = Square.getSquare(r,f);
+        if (s.getPiece().equals(Square.neutralPiece)){
+        }
+        else if(!(s.getPiece().getTeam().equals(p.getTeam())) && s.getPiece().getEnPassant()) {
+            if (Player.getPlayer().equals(Player.white)){
+                r++;
+            }
+            else {
+                r--;
+            }
+            Square.selected = s;
+            s = Square.getSquare(r,f);
+            s.activateRed(p);
+        }
+    }
     public static void enPassant(Piece p, Square square){
+        for (Piece piece : Piece.getPieces()){
+            piece.setEnPassant(false);
+        }
+
+        int r = square.getRank();
+        char f = square.getFile();
         if (p.getMove() && p.getName().equals("Pawn")
-                && (square.getRank() == 4 || square.getRank() == 5)){
-            int r = square.getRank();
-            char f = square.getFile();
+                && (r == 4 || r == 5)){
             f++;
             Piece piece = Square.getSquare(r,f).getPiece();
-            if (!piece.getTeam().equals(p.getTeam())){
+            if (piece.getTeam() != p.getTeam()){
                 piece.setEnPassant(true);
+                p.setEnPassant(true);
             }
             f--;f--;
             piece = Square.getSquare(r,f).getPiece();
-            if (!piece.getTeam().equals(p.getTeam())){
+            if (piece.getTeam() != p.getTeam()){
                 piece.setEnPassant(true);
+                p.setEnPassant(true);
             }
         }
     }
     public static void castling(Square a, Square b , Square c, Square d, Square e){
         Piece rook = a.getPiece();
-        rook.setMove();
         Piece king = e.getPiece();
-        king.setMove();
-        Board.setBounds(c.boardPosition,king.getButton());
-        Board.setBounds(d.boardPosition,rook.getButton());
+        CheckMate.check();
 
         a.setPiece(Square.neutralPiece);
         c.setPiece(king);
         d.setPiece(rook);
         e.setPiece(Square.neutralPiece);
+
+        CheckMate.check();
+        if (CheckMate.teamCheck){
+            e.setPiece(king);
+            d.setPiece(Square.neutralPiece);
+            c.setPiece(Square.neutralPiece);
+            a.setPiece(rook);
+        }
+        else {
+            Board.setBounds(c.boardPosition,king.getButton());
+            Board.setBounds(d.boardPosition,rook.getButton());
+            king.setMove();
+            rook.setMove();
+            Player.nextTurn();
+        }
+
+
     }
     public static void castling(Square e, Square f , Square g, Square h){
         Piece rook = h.getPiece();
-        rook.setMove();
         Piece king = e.getPiece();
-        king.setMove();
-        Board.setBounds(f.boardPosition,rook.getButton());
-        Board.setBounds(g.boardPosition,king.getButton());
+        CheckMate.check();
 
         e.setPiece(Square.neutralPiece);
         f.setPiece(rook);
         g.setPiece(king);
         h.setPiece(Square.neutralPiece);
+
+        CheckMate.check();
+        if (CheckMate.teamCheck){
+            e.setPiece(king);
+            f.setPiece(Square.neutralPiece);
+            g.setPiece(Square.neutralPiece);
+            h.setPiece(rook);
+        }
+        else {
+            Board.setBounds(f.boardPosition,rook.getButton());
+            Board.setBounds(g.boardPosition,king.getButton());
+            king.setMove();
+            rook.setMove();
+            Player.nextTurn();
+        }
+        CheckMate.teamCheck = false;
     }
 }

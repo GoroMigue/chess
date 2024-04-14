@@ -153,9 +153,7 @@ public class Board {
         board.setEnabled(true);
         board.setLocationRelativeTo(null);
         board.setVisible(true);
-        System.out.println(p.getTeam());
         Player.nextTurn();
-
     }
 //
     public static JButton castlingR = new JButton();
@@ -193,7 +191,6 @@ public class Board {
                 castlingR.setVisible(false);
                 castlingL.setVisible(false);
                 Square.deactivateAll();
-                Player.nextTurn();
             }});
         Board.b.add(castling,1);
         board.revalidate();board.repaint();

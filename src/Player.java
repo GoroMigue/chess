@@ -1,5 +1,4 @@
 import java.util.Arrays;
-import java.util.Iterator;
 
 public class Player {
     public static Player white;
@@ -28,8 +27,8 @@ public class Player {
     }
 //
     public static void setPieces(){
-            white.teamPieces = Arrays.copyOfRange(Piece.getPieces(), 0, 15);
-            black.teamPieces = Arrays.copyOfRange(Piece.getPieces(), 16, 31);
+        black.teamPieces = Arrays.copyOfRange(Piece.getPieces(), 0, 16);
+        white.teamPieces = Arrays.copyOfRange(Piece.getPieces(), 16, 32);
     }
     public static Player getPlayer(){
         if (turn.equals("White")){
@@ -42,16 +41,12 @@ public class Player {
     public static void nextTurn(){
         Board.castlingR.setVisible(false);
         Board.castlingL.setVisible(false);
-        if (CheckMate.enemyCheck){
-            CheckMate.enemyCheck = false;
-            CheckMate.teamCheck = false;
-            CheckMate.checkMate();
-        }
         if (turn.equals("White")){
             turn = "Black";
         }
         else {
             turn = "White";
         }
+        CheckMate.checkMate();
     }
 }

@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 
 public class Square {
@@ -46,7 +45,12 @@ public class Square {
         this.button.setFocusPainted(false);
         this.button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                teleportPiece(Square.this);
+                if (Piece.selected.getEnPassant() && Piece.selected.getName().equals("Pawn") && Square.this.kill){
+                    teleportEnPassant(Square.this);
+                }
+                else{
+                    teleportPiece(Square.this);
+                }
                 System.out.println(Square.this.file + " " + Square.this.rank + " Board Position: " + Square.this.boardPosition);
                 deactivateAll();
             }});
@@ -64,12 +68,7 @@ public class Square {
         this.piece = piece; }
     public void activateRed(Piece p){
         if (this.piece.getName().equals("King") && CheckMate.checking){
-            if (this.piece.getTeam().equals(Piece.selected.getTeam())){
-                CheckMate.teamCheck = true;
-            }
-            else{
-                CheckMate.enemyCheck = true;
-            }
+            CheckMate.teamCheck = true;
         }
         if (CheckMate.checkingMate){
             Piece.selected = p;
@@ -129,13 +128,6 @@ public class Square {
         sq.setPiece(neutralPiece);
         square.setPiece(Piece.selected);
 
-        if (Piece.selected.getEnPassant()) {
-            p = Square.selected.getPiece();
-            p.getButton().setVisible(false);
-            Piece.selected.setEnPassant(false);
-            Square.selected.setPiece(neutralPiece);
-        }
-
         if (CheckMate.checkingMateChecking) {CheckMate.checkingMate = false;}
         CheckMate.check();
         if (CheckMate.checkingMateChecking) {
@@ -155,7 +147,9 @@ public class Square {
         else {
             Board.setBounds(square.boardPosition, Piece.selected.getButton());
             Move.enPassant(Piece.selected, square);
-            Piece.selected.setMove();
+            if (!CheckMate.checking){
+                Piece.selected.setMove();
+            }
             if (square.kill) {
                 Player.getPlayer().kill(p);
             }
@@ -167,7 +161,43 @@ public class Square {
         if (!Board.promoting){Piece.selected = neutralPiece;}
         CheckMate.teamCheck = false;
         square.kill = false;
+    }
+    public static void teleportEnPassant(Square square){
+        Square sq = getSquare(Piece.selected);
+        Piece p = Square.selected.getPiece();
+        Square.selected.setPiece(neutralPiece);
+        sq.setPiece(neutralPiece);
+        square.setPiece(Piece.selected);
 
+        if (CheckMate.checkingMateChecking) {CheckMate.checkingMate = false;}
+        CheckMate.check();
+        if (CheckMate.checkingMateChecking) {
+            CheckMate.checkingMate = true;
+            CheckMate.checkingMateChecking = false;
+        }
+
+        if (CheckMate.teamCheck){
+            sq.setPiece(Piece.selected);
+            square.setPiece(neutralPiece);
+            Square.selected.setPiece(p);
+        }
+        else if (CheckMate.checkingMate) {
+            CheckMate.checkMove = true;
+            sq.setPiece(Piece.selected);
+            square.setPiece(neutralPiece);
+            Square.selected.setPiece(p);
+        }
+        else {
+            Board.setBounds(square.boardPosition, Piece.selected.getButton());
+            Move.enPassant(Piece.selected, square);
+            if (square.kill) {
+                Player.getPlayer().kill(p);
+            }
+            Player.nextTurn();
+        }
+        Piece.selected = neutralPiece;
+        CheckMate.teamCheck = false;
+        square.kill = false;
     }
 //
     public static void squareBuilder(){
