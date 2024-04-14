@@ -131,12 +131,12 @@ public class Move {
             Square h = Square.getSquare(r,f);
 
             if (!CheckMate.teamCheck){
-                if (a.getPiece().getMove() && p.getMove() && b.getPiece().equals(Square.neutralPiece)
-                        && c.getPiece().equals(Square.neutralPiece) && d.getPiece().equals(Square.neutralPiece)) {
+                if (a.getPiece().getMove() && p.getMove() && b.getPiece().equals(Piece.neutralPiece)
+                        && c.getPiece().equals(Piece.neutralPiece) && d.getPiece().equals(Piece.neutralPiece)) {
                     Board.castlingButton("Right", a, b, c, d, e);
                 }
-                if (p.getMove() && h.getPiece().getMove() && t.getPiece().equals(Square.neutralPiece)
-                        && g.getPiece().equals(Square.neutralPiece)) {
+                if (p.getMove() && h.getPiece().getMove() && t.getPiece().equals(Piece.neutralPiece)
+                        && g.getPiece().equals(Piece.neutralPiece)) {
                     Board.castlingButton("Left", e, t, g, h, null);
                 }
             }
@@ -187,7 +187,7 @@ public class Move {
     private static void pieceCheck(int r, char f, Piece p){
         Square  s = Square.getSquare(r,f);
 
-        if (s.getPiece().equals(Square.neutralPiece)){
+        if (s.getPiece().equals(Piece.neutralPiece)){
             //activate yellow
             if(!p.getName().equals("Pawn")){s.activateYellow(p);}
         } else if (!(s.getPiece().getTeam().equals(p.getTeam()))){
@@ -201,7 +201,7 @@ public class Move {
     }
     private static void pieceCheckPawn(int r, char f, Piece p){
         Square  s = Square.getSquare(r,f);
-        if (s.getPiece().equals(Square.neutralPiece)){
+        if (s.getPiece().equals(Piece.neutralPiece)){
             //activate yellow
             s.activateYellow(p);
         }
@@ -211,7 +211,7 @@ public class Move {
     }
     private static void pieceCheckEnPassant(int r, char f, Piece p){
         Square  s = Square.getSquare(r,f);
-        if (s.getPiece().equals(Square.neutralPiece)){
+        if (s.getPiece().equals(Piece.neutralPiece)){
         }
         else if(!(s.getPiece().getTeam().equals(p.getTeam())) && s.getPiece().getEnPassant()) {
             if (Player.getPlayer().equals(Player.white)){
@@ -253,16 +253,16 @@ public class Move {
         Piece king = e.getPiece();
         CheckMate.check();
 
-        a.setPiece(Square.neutralPiece);
+        a.setPiece(Piece.neutralPiece);
         c.setPiece(king);
         d.setPiece(rook);
-        e.setPiece(Square.neutralPiece);
+        e.setPiece(Piece.neutralPiece);
 
         CheckMate.check();
         if (CheckMate.teamCheck){
             e.setPiece(king);
-            d.setPiece(Square.neutralPiece);
-            c.setPiece(Square.neutralPiece);
+            d.setPiece(Piece.neutralPiece);
+            c.setPiece(Piece.neutralPiece);
             a.setPiece(rook);
         }
         else {
@@ -280,16 +280,16 @@ public class Move {
         Piece king = e.getPiece();
         CheckMate.check();
 
-        e.setPiece(Square.neutralPiece);
+        e.setPiece(Piece.neutralPiece);
         f.setPiece(rook);
         g.setPiece(king);
-        h.setPiece(Square.neutralPiece);
+        h.setPiece(Piece.neutralPiece);
 
         CheckMate.check();
         if (CheckMate.teamCheck){
             e.setPiece(king);
-            f.setPiece(Square.neutralPiece);
-            g.setPiece(Square.neutralPiece);
+            f.setPiece(Piece.neutralPiece);
+            g.setPiece(Piece.neutralPiece);
             h.setPiece(rook);
         }
         else {

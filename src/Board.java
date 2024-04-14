@@ -5,8 +5,8 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class Board {
-    private static JFrame board;
-    private static JLabel b;
+    public static JFrame board;
+    public static JLabel b;
     public static int position = 0;
     public static int[][] boardXY = {
             {56, 56},   {167, 56},  {278, 56},  {389, 56},  {500, 56},  {611, 56},  {722, 56},  {833, 56},
@@ -20,9 +20,6 @@ public class Board {
     };
 //
     public Board(){
-        if (!(board == null)){
-            board.dispose();
-        }
         board = new JFrame();
         board.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         board.setSize(1000,1000);
@@ -37,10 +34,18 @@ public class Board {
         b = new JLabel(board_);
         b.setBounds(0,0,1000,1000);
 
+        JButton options = ChessGame.getButton("▣",960,25);
+        options.setBounds(960,15,25,25);
+        options.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                Board.board.setEnabled(false);
+                ChessGame.pauseGame();
+            }
+        });
 
         board.add(b);
         board.setVisible(true);
-
+        b.add(options);
         Piece.piecesBuilder();
         Square.squareBuilder();
         addPieces();
@@ -101,12 +106,7 @@ public class Board {
         Piece queen = new Piece("Queen",team);
         queen.getButton().setBounds(400,100,100,110);
 
-        JButton noPromotion = new JButton("<html><center>DON'T<br>PROMOTE</center></html");
-        noPromotion.setBackground(new Color(97, 41, 27, 205));
-        noPromotion.setForeground(Color.WHITE);
-        noPromotion.setFont(new Font("Geneva", Font.BOLD, 20));
-        noPromotion.setBounds(200,215,125,75);
-        noPromotion.setVisible(true);
+        JButton noPromotion = ChessGame.getButton("<html><center>DON'T<br>PROMOTE</center></html>", 188,215);
         noPromotion.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 promotion.dispose();
@@ -148,7 +148,7 @@ public class Board {
         setBounds(sq.boardPosition,p.getButton());
 
         promoting = false;
-        Piece.selected = Square.neutralPiece;
+        Piece.selected = Piece.neutralPiece;
 
         board.setEnabled(true);
         board.setLocationRelativeTo(null);
@@ -159,14 +159,14 @@ public class Board {
     public static JButton castlingR = new JButton();
     public static JButton castlingL = new JButton();
     public static void castlingButton(String side, Square a, Square b, Square c, Square d, Square e){
-        JButton castling = new JButton("<html><center>CASTLING</center></html");
+        JButton castling = ChessGame.getButton("<html><center>CASTLING</center></html>",0,0);
         int x, y;
         if (side.equals("Right")){
-            x = 271;
+            x = 314;
             castlingR = castling;
         }
         else {
-            x = 604;
+            x = 647;
             castlingL = castling;
         }
         if (Player.getPlayer().equals(Player.white)){
@@ -175,12 +175,8 @@ public class Board {
         else{
             y = 25;
         }
+        castling.setBounds(x,y,150,75);
 
-        castling.setBackground(new Color(110, 50, 36, 255));
-        castling.setForeground(Color.WHITE);
-        castling.setFont(new Font("Geneva", Font.BOLD, 20));
-        castling.setBounds(x,y,125,75);
-        castling.setVisible(true);
         castling.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent f){
                 if (e == null){

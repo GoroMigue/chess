@@ -21,7 +21,7 @@ public class CheckMate {
         }
         for (Piece p : pieces) {
             Move.move(p);
-            if (teamCheck){;break;}
+            if (teamCheck){break;}
         }
         Square.deactivateAll();
         checking = false;
@@ -40,13 +40,16 @@ public class CheckMate {
         }
         Square.deactivateAll();
         if (!checkMove) {
-            deadEnd();
+            String team = "";
+            if (Player.getPlayer().equals(Player.white)) {
+                team = "BLACK TEAM";
+            }
+            else {
+                team = "WHITE TEAM";
+            }
+            ChessGame.gameOver(team);
         }
         teamCheck = false;
         checkingMate = false;
-    }
-
-    public static void deadEnd() {
-        System.out.println("GAME OVER");
     }
 }

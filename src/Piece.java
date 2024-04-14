@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 public class Piece {
     public static Piece selected;
+    public static Piece neutralPiece = new Piece("Neutral","Neutral");
     public static Piece[] pieces;
 //
     private String name;
@@ -43,7 +44,7 @@ public class Piece {
                 else{
                     if (Piece.selected.equals(Piece.this)){
                         Square.deactivateAll();
-                        selected = Square.neutralPiece;
+                        selected = Piece.neutralPiece;
                     }
                     else if (Player.turn.equals(team)) {
                         Square.deactivateAll();

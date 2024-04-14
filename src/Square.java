@@ -5,8 +5,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class Square {
-    public static ArrayList<ArrayList<Square>> squares = new ArrayList<>();
-    public static Piece neutralPiece = new Piece("Neutral","Neutral");
+    public static ArrayList<ArrayList<Square>> squares;
     public static Square neutralSquare;
     public static Square selected;
 //
@@ -125,7 +124,7 @@ public class Square {
     public static void teleportPiece(Square square){
         Square sq = getSquare(Piece.selected);
         Piece p = square.getPiece();
-        sq.setPiece(neutralPiece);
+        sq.setPiece(Piece.neutralPiece);
         square.setPiece(Piece.selected);
 
         if (CheckMate.checkingMateChecking) {CheckMate.checkingMate = false;}
@@ -158,15 +157,15 @@ public class Square {
             }
             else {Player.nextTurn();}
         }
-        if (!Board.promoting){Piece.selected = neutralPiece;}
+        if (!Board.promoting){Piece.selected = Piece.neutralPiece;}
         CheckMate.teamCheck = false;
         square.kill = false;
     }
     public static void teleportEnPassant(Square square){
         Square sq = getSquare(Piece.selected);
         Piece p = Square.selected.getPiece();
-        Square.selected.setPiece(neutralPiece);
-        sq.setPiece(neutralPiece);
+        Square.selected.setPiece(Piece.neutralPiece);
+        sq.setPiece(Piece.neutralPiece);
         square.setPiece(Piece.selected);
 
         if (CheckMate.checkingMateChecking) {CheckMate.checkingMate = false;}
@@ -178,13 +177,13 @@ public class Square {
 
         if (CheckMate.teamCheck){
             sq.setPiece(Piece.selected);
-            square.setPiece(neutralPiece);
+            square.setPiece(Piece.neutralPiece);
             Square.selected.setPiece(p);
         }
         else if (CheckMate.checkingMate) {
             CheckMate.checkMove = true;
             sq.setPiece(Piece.selected);
-            square.setPiece(neutralPiece);
+            square.setPiece(Piece.neutralPiece);
             Square.selected.setPiece(p);
         }
         else {
@@ -195,12 +194,13 @@ public class Square {
             }
             Player.nextTurn();
         }
-        Piece.selected = neutralPiece;
+        Piece.selected = Piece.neutralPiece;
         CheckMate.teamCheck = false;
         square.kill = false;
     }
 //
     public static void squareBuilder(){
+        squares = new ArrayList<>();
         int totalPieces = 0;
         Board.position = 0;
         for (int rank = 7;rank >= 0; rank--){
@@ -209,7 +209,7 @@ public class Square {
             for (char file = 'A';file <= 'H'; file++){
                 int crank = rank + 1;
                 if (rank >= 2 && rank < 6){
-                    squares.get(irank).add(new Square(file, crank,neutralPiece));
+                    squares.get(irank).add(new Square(file, crank,Piece.neutralPiece));
                 }
                 else{
                     squares.get(irank).add(new Square(file, crank, Piece.getPieces()[totalPieces]));
@@ -218,6 +218,6 @@ public class Square {
             }
             irank++;
         }
-        neutralSquare  = new Square('N',0,neutralPiece);
+        neutralSquare  = new Square('N',0,Piece.neutralPiece);
     }
 }
