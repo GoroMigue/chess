@@ -13,7 +13,7 @@ public class Piece {
 //
     private String name;
     private String team;
-    // Boolean to verify if there's any movement left
+    // Boolean to verify if it's first move
     private boolean move;
     // Booolean to verify en passant situations
     private boolean enPassant;

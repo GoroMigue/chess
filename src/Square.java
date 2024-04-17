@@ -140,6 +140,7 @@ public class Square {
             CheckMate.checkMove = true;
             sq.setPiece(Piece.selected);
             square.setPiece(p);
+            //if (CPU.cpu) { CPU.score(square);}
         }
         else {
             Board.setBounds(square.boardPosition, Piece.selected.getButton());
@@ -150,7 +151,8 @@ public class Square {
             if (square.kill) {
                 Player.getPlayer().kill(p);
             }
-            if (Piece.selected.getName().equals("Pawn") && (square.getRank() == 1 || square.getRank() == 8)) {
+            if (Piece.selected.getName().equals("Pawn") && (square.getRank() == 1 || square.getRank() == 8)
+                /* && !p.getTeam().equals("black")*/) {
                 Board.promotion();
             }
             else {Player.nextTurn();}

@@ -72,6 +72,7 @@ public class ChessGame {
         mainMenu.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 resetGame();
+                inGameMenu.setVisible(false);
                 startMenu();
             }
         });

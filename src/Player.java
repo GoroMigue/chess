@@ -8,21 +8,17 @@ public class Player {
     public static String turn = "White";
 //
     private String team;
-    private int kills = 0;
-    private Piece [] enemyPieces;
     private Piece [] teamPieces;
 //
     public Player(String team){
         this.team = team;
-        this.enemyPieces = new Piece[16];
         this.teamPieces = new Piece[16];
     }
 //
     public void kill(Piece p){
+        p.setMove();
         p.getButton().setEnabled(false);
         p.getButton().setVisible(false);
-        enemyPieces[kills] = p;
-        kills++;
     }
     public Piece[] getPieces(){
         return teamPieces;
@@ -53,5 +49,7 @@ public class Player {
             turn = "White";
         }
         CheckMate.checkMate();
+
+        //if (turn.equals("Black")){CPU.cpuMove();}
     }
 }
