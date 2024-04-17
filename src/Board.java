@@ -5,8 +5,11 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class Board {
+    // Main frame of board
     public static JFrame board;
+    // Label that shows board image and includes all piece and square buttons
     public static JLabel b;
+    // It assigns a position to every square in the board map (boardXY)
     public static int position = 0;
     public static int[][] boardXY = {
             {56, 56},   {167, 56},  {278, 56},  {389, 56},  {500, 56},  {611, 56},  {722, 56},  {833, 56},
@@ -19,6 +22,7 @@ public class Board {
             {56, 833},  {167, 833}, {278, 833}, {389, 833}, {500, 833}, {611, 833}, {722, 833}, {833, 833},
     };
 //
+    // Board builder, includes all GUI start methods and also builds pieces and squares
     public Board(){
         board = new JFrame();
         board.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -65,13 +69,17 @@ public class Board {
             }
         }
     }
+    // Set bounds of every button inside the board using the board map (boardXY)
     public static void setBounds(int index, JButton button){
         if (index < 64){
             button.setBounds(Board.boardXY[index][0],Board.boardXY[index][1],111,111);
         }}
 //
+    // Frame for pawn promoting
     private static JFrame promotion;
+    // Boolean that gets activated when promotion conditions occurs
     public static boolean promoting;
+    // Promotion frame builder
     public static void promotion(){
         promoting = true;
         board.setEnabled(false);
@@ -125,6 +133,7 @@ public class Board {
         promotion.add(noPromotion);
         promotion.setVisible(true);
     }
+    // Method that promotes a pawn
     public static void promotePawn(Piece p){
         Square sq = Square.getSquare(Piece.selected);
         sq.setPiece(p);
@@ -156,8 +165,10 @@ public class Board {
         Player.nextTurn();
     }
 //
+    // Castling has two buttons, one on the right side and the other on the left side
     public static JButton castlingR = new JButton();
     public static JButton castlingL = new JButton();
+    // This method activates the button depending on the team and the right/left side
     public static void castlingButton(String side, Square a, Square b, Square c, Square d, Square e){
         JButton castling = ChessGame.getButton("<html><center>CASTLING</center></html>",0,0);
         int x, y;

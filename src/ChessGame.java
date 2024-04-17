@@ -177,5 +177,4 @@ public class ChessGame {
         button.setBounds(x,y,150,75);
         return button;
     }
-
 }

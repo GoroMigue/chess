@@ -4,13 +4,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Piece {
+    // Static current selected piece
     public static Piece selected;
+    // Static neutralPiece, situated on every neutral square
     public static Piece neutralPiece = new Piece("Neutral","Neutral");
-    public static Piece[] pieces;
+    // Array of pieces of the current game
+    private static Piece[] pieces;
 //
     private String name;
     private String team;
+    // Boolean to verify if there's any movement left
     private boolean move;
+    // Booolean to verify en passant situations
     private boolean enPassant;
     private ImageIcon image;
     private JButton button;
@@ -78,13 +83,11 @@ public class Piece {
     public void setEnPassant(Boolean b){
         this.enPassant = b;
     }
-    public void setTeam(String t){
-        this.team = t;
-    }
     public void setMove(){
         this.move = false;
     }
 //
+    // Return all pieces of the current game
     public static Piece[] getPieces(){
         return pieces;
     }

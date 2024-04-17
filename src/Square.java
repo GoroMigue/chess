@@ -5,33 +5,31 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class Square {
+    // Static ArrayList of ArrayList of every square of the current game
+    // Main ArrayList contains 8 Arraylist representing ranks of the board
+    // Each rank ArrayList contains squares representing files of the board
     public static ArrayList<ArrayList<Square>> squares;
+    // Neutral square to avoid null references, it's actually never used
     public static Square neutralSquare;
+    // Current selected square, it helps while teleporting or checking at special situations
     public static Square selected;
 //
     private char file;
     private int rank;
     private Piece piece;
-    private ImageIcon imageYellow;
-    private ImageIcon imageRed;
     private JButton button;
     public boolean kill;
     public int boardPosition;
+    // Static images for squares and their states
+    private static ImageIcon imageYellow;
+    private static ImageIcon imageRed;
 //
     public Square(char file, int rank, Piece piece) {
         this.file = file;
         this.rank = rank;
         this.piece = piece;
         this.kill = false;
-        ImageIcon yellow = new ImageIcon("src/images/yellow.png");
-        Image ImY = yellow.getImage().getScaledInstance(111, 111, Image.SCALE_SMOOTH);
-        this.imageYellow = new ImageIcon(ImY);
         this.button = new JButton(imageRed);
-
-        ImageIcon red = new ImageIcon("src/images/red.png");
-        Image ImR = red.getImage().getScaledInstance(111, 111, Image.SCALE_SMOOTH);
-        this.imageRed = new ImageIcon(ImR);
-
         this.boardPosition = Board.position;
 
         Board.setBounds(boardPosition, this.button);
@@ -200,6 +198,14 @@ public class Square {
     }
 //
     public static void squareBuilder(){
+        ImageIcon yellow = new ImageIcon("src/images/yellow.png");
+        Image ImY = yellow.getImage().getScaledInstance(111, 111, Image.SCALE_SMOOTH);
+        imageYellow = new ImageIcon(ImY);
+
+        ImageIcon red = new ImageIcon("src/images/red.png");
+        Image ImR = red.getImage().getScaledInstance(111, 111, Image.SCALE_SMOOTH);
+        imageRed = new ImageIcon(ImR);
+
         squares = new ArrayList<>();
         int totalPieces = 0;
         Board.position = 0;

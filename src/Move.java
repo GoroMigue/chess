@@ -1,4 +1,6 @@
 public class Move {
+    // Static boolean that verifies when the movement has to stop,
+    // when a piece is on the way
     public static boolean stop = false;
     public static void move(Piece piece){
         switch (piece.getName()) {
@@ -184,6 +186,7 @@ public class Move {
         stop = false;
     }
 //
+    // Checks if a square contains an enemy, team or neutral piece
     private static void pieceCheck(int r, char f, Piece p){
         Square  s = Square.getSquare(r,f);
 
@@ -199,6 +202,7 @@ public class Move {
             stop = true;
         }
     }
+    // Checking special situation for pawn straight move
     private static void pieceCheckPawn(int r, char f, Piece p){
         Square  s = Square.getSquare(r,f);
         if (s.getPiece().equals(Piece.neutralPiece)){
@@ -209,6 +213,7 @@ public class Move {
             stop = true;
         }
     }
+    // Checking special situation en passant
     private static void pieceCheckEnPassant(int r, char f, Piece p){
         Square  s = Square.getSquare(r,f);
         if (s.getPiece().equals(Piece.neutralPiece)){
@@ -225,6 +230,7 @@ public class Move {
             s.activateRed(p);
         }
     }
+    // Sets the en passant boolean true on both involved pieces
     public static void enPassant(Piece p, Square square){
         for (Piece piece : Piece.getPieces()){
             piece.setEnPassant(false);
@@ -248,6 +254,7 @@ public class Move {
             }
         }
     }
+    // Teleporting on special situation of castling.
     public static void castling(Square a, Square b , Square c, Square d, Square e){
         Piece rook = a.getPiece();
         Piece king = e.getPiece();

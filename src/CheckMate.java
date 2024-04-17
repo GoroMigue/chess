@@ -10,6 +10,7 @@ public class CheckMate {
     // Variable to check if there are no possible movements left
     public static boolean checkMove;
 
+    // It checks every enemy piece movement to verify if team king is in check
     public static void check() {
         checking = true;
         Piece[] pieces;
@@ -27,6 +28,9 @@ public class CheckMate {
         checking = false;
     }
 
+    // It verifies every possible subsequent situation after every movement of every piece
+    // If there's no possible movement left, "checkMove" stays false and game over
+    // If it's possible to move, "checkMove" turns to true and game continues
     public static void checkMate() {
         checkingMate = true;
         teamCheck = false;
