@@ -65,7 +65,12 @@ public class Square {
         this.piece = piece; }
     public void activateRed(Piece p){
         if (this.piece.getName().equals("King") && CheckMate.checking){
-            CheckMate.teamCheck = true;
+            if (this.piece.getTeam().equals(Player.turn)) {
+                CheckMate.teamCheck = true;
+            }
+            else {
+                CPU.enemyCheck = true;
+            }
         }
         if (CheckMate.checkingMate){
             Piece.selected = p;
@@ -140,7 +145,7 @@ public class Square {
             CheckMate.checkMove = true;
             sq.setPiece(Piece.selected);
             square.setPiece(p);
-            //if (CPU.cpu) { CPU.score(square);}
+            if (CPU.cpu) { CPU.score(square);}
         }
         else {
             Board.setBounds(square.boardPosition, Piece.selected.getButton());
@@ -151,9 +156,9 @@ public class Square {
             if (square.kill) {
                 Player.getPlayer().kill(p);
             }
-            if (Piece.selected.getName().equals("Pawn") && (square.getRank() == 1 || square.getRank() == 8)
-                /* && !p.getTeam().equals("black")*/) {
-                Board.promotion();
+            if (Piece.selected.getName().equals("Pawn") && (square.getRank() == 1 || square.getRank() == 8)) {
+                if (!(ChessGame.cpuMode && Player.turn.equals("Black"))) {Board.promotion();}
+                else {Player.nextTurn();}
             }
             else {Player.nextTurn();}
         }

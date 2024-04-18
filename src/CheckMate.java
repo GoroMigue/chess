@@ -14,7 +14,10 @@ public class CheckMate {
     public static void check() {
         checking = true;
         Piece[] pieces;
-        if (Player.getPlayer().equals(Player.white)){
+        if (CPU.cpu) {
+            pieces = Piece.getPieces();
+        }
+        else if (Player.getPlayer().equals(Player.white)){
             pieces = Player.black.getPieces();
         }
         else {
@@ -44,6 +47,7 @@ public class CheckMate {
         }
         Square.deactivateAll();
         if (!checkMove) {
+            ChessGame.cpuMode = false;
             String team = "";
             if (Player.getPlayer().equals(Player.white)) {
                 team = "BLACK TEAM";

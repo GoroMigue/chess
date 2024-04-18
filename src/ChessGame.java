@@ -11,12 +11,14 @@ public class ChessGame {
     public static JFrame gameOverMenu;
     // Winner label on game over menu
     public static JLabel winner;
+    public static boolean cpuMode;
 
     // Main method, it builds in game menu and shows start menu
     public static void main(String[] args) {
         startMenu();
         inGameMenu();
         gameOverMenu();
+        CPU.buildFrame();
     }
 
     // Start menu with start and exit buttons
@@ -43,7 +45,34 @@ public class ChessGame {
                 System.exit(0);
             }
         });
+        JLabel textCPU = new JLabel("<html><center>CPU DEACTIVATED</center></html>");
+        textCPU.setFont(new Font("Agency FB", Font.BOLD, 30));
+        textCPU.setBounds(166,365,170,60);
+        textCPU.setHorizontalTextPosition(SwingConstants.CENTER);
+        textCPU.setForeground(new Color(0, 0, 0));
+        textCPU.setVisible(true);
 
+        JButton activateCPU = ChessGame.getButton("<html><center>▢</center></html>",960,350);
+        activateCPU.setBounds(237,350,25,25);
+        activateCPU.setHorizontalTextPosition(SwingConstants.CENTER);
+        activateCPU.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                if (cpuMode){
+                    cpuMode = false;
+                    activateCPU.setText("<html><center>▢</center></html>");
+                    textCPU.setText("<html><center>CPU DEACTIVATED</center></html>");
+                    textCPU.setBounds(166,365,170,60);
+                }
+                else {
+                    cpuMode = true;
+                    activateCPU.setText("<html><center>▣</center></html>");
+                    textCPU.setText("<html><center>CPU ACTIVATED</center></html>");
+                    textCPU.setBounds(179,365,145,60);
+                }
+            }
+        });
+        startMenu.add(textCPU);
+        startMenu.add(activateCPU);
         startMenu.add(start);
         startMenu.add(exit);
         startMenu.add(background);
@@ -81,6 +110,7 @@ public class ChessGame {
         exit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 inGameMenu.dispose();
+                Board.board.dispose();
                 System.exit(0);
             }
         });

@@ -85,7 +85,6 @@ public class Board {
         board.setEnabled(false);
         board.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         promotion = new JFrame();
-        promotion = new JFrame();
         promotion.setSize(525,300);
         promotion.setLayout(null);
         promotion.setUndecorated(true);

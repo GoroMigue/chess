@@ -1,12 +1,34 @@
+import javax.swing.*;
+import java.awt.*;
 import java.util.Random;
 
-public class CPU {
+public class CPU{
+    // Basic CPU works by evaluating every possible move and assigning them a score,
+    // then it will move to the highest score.
+    // Additionally, it displays a frame while CPU is making its move, ensuring it
+    // doesn't move instantly, making its behavior more human-like and facilitating
+    // observation of its actions.
     public static boolean cpu;
     public static int score;
+    public static boolean enemyCheck;
     public static Square squareCpu;
     public static Piece pieceCpu;
+    public static JFrame cpuTurn;
 
-    public static void cpuMove(){
+    public static void checkMove(){
+        SwingUtilities.invokeLater(() -> {
+            Square.deactivateAll();
+            cpuTurn.setVisible(true);
+        });
+        Timer timer = new Timer(1000, e -> {
+            Square.deactivateAll();
+            runCPU();
+            cpuTurn.setVisible(false);
+        });
+        timer.setRepeats(false);
+        timer.start();
+    }
+    public static void runCPU(){
         score = -1;
         cpu = true;
         CheckMate.checkingMate = true;
@@ -17,12 +39,12 @@ public class CPU {
         }
         CheckMate.checkingMate = false;
         cpu = false;
+        enemyCheck =false;
         squareCpu.kill = true;
         Piece.selected = pieceCpu;
         Square.teleportPiece(squareCpu);
         Square.deactivateAll();
     }
-
     public static void score(Square square){
         int squareScore = 0;
         Random rd = new Random();
@@ -45,11 +67,30 @@ public class CPU {
             case "Pawn": squareScore += rd.nextInt(50); break;
             default:
         }
+        if (enemyCheck) {squareScore += 100;}
 
         if (squareScore > score && !square.equals(Square.neutralSquare)) {
             score = squareScore;
             pieceCpu = Piece.selected;
             squareCpu = square;
         }
+        enemyCheck = false;
+    }
+    public static void buildFrame(){
+        cpuTurn = new JFrame();
+        cpuTurn.setSize(300,170);
+        cpuTurn.setLayout(null);
+        cpuTurn.setUndecorated(true);
+        cpuTurn.setLocationRelativeTo(null);
+
+        JLabel text = new JLabel("<html><center>BLACK TEAM<br>TURN</center></html>");
+        text.setFont(new Font("Agency FB", Font.BOLD, 60));
+        text.setBounds(25,25,250,120);
+        text.setHorizontalTextPosition(SwingConstants.CENTER);
+        text.setForeground(new Color(0, 0, 0));
+        text.setVisible(true);
+
+        cpuTurn.add(text);
+        cpuTurn.setVisible(false);
     }
 }

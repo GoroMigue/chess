@@ -50,6 +50,6 @@ public class Player {
         }
         CheckMate.checkMate();
 
-        //if (turn.equals("Black")){CPU.cpuMove();}
+        if (ChessGame.cpuMode && turn.equals("Black")){CPU.checkMove();}
     }
 }
