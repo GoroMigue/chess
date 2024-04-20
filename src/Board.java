@@ -23,7 +23,7 @@ public class Board {
     };
 //
     // Board builder, includes all GUI start methods and also builds pieces and squares
-    public Board(){
+    public Board() {
         board = new JFrame();
         board.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         board.setSize(1000,1000);
@@ -40,8 +40,8 @@ public class Board {
 
         JButton options = ChessGame.getButton("▣",960,25);
         options.setBounds(960,15,25,25);
-        options.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
+        options.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 Board.board.setEnabled(false);
                 ChessGame.pauseGame();
             }
@@ -70,8 +70,8 @@ public class Board {
         }
     }
     // Set bounds of every button inside the board using the board map (boardXY)
-    public static void setBounds(int index, JButton button){
-        if (index < 64){
+    public static void setBounds(int index, JButton button) {
+        if (index < 64) {
             button.setBounds(Board.boardXY[index][0],Board.boardXY[index][1],111,111);
         }}
 //
@@ -80,7 +80,7 @@ public class Board {
     // Boolean that gets activated when promotion conditions occurs
     public static boolean promoting;
     // Promotion frame builder
-    public static void promotion(){
+    public static void promotion() {
         promoting = true;
         board.setEnabled(false);
         board.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -98,7 +98,7 @@ public class Board {
 
 
         String team = "";
-        if (Piece.selected.getTeam().equals("White")){
+        if (Piece.selected.getTeam().equals("White")) {
             team = "White";
         }
         else {
@@ -115,7 +115,7 @@ public class Board {
 
         JButton noPromotion = ChessGame.getButton("<html><center>DON'T<br>PROMOTE</center></html>", 188,215);
         noPromotion.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e){
+            public void actionPerformed(ActionEvent e) {
                 promotion.dispose();
                 promoting = false;
                 board.setEnabled(true);
@@ -133,24 +133,20 @@ public class Board {
         promotion.setVisible(true);
     }
     // Method that promotes a pawn
-    public static void promotePawn(Piece p){
+    public static void promotePawn(Piece p) {
         Square sq = Square.getSquare(Piece.selected);
         sq.setPiece(p);
         promotion.dispose();
-        Piece[] pieces = Piece.getPieces();
-        for (int i = 0; i < pieces.length; i++) {
-            if (pieces[i].equals(Piece.selected)) {
-                pieces[i] = p;
-                break;
-            }
-        }
+
+        ArrayList<Piece> pieces = Piece.getPieces();
+        int piecesIndex = pieces.indexOf(Piece.selected);
+        pieces.set(piecesIndex,p);
+
         pieces = Player.getPlayer().getPieces();
-        for (int i = 0; i < pieces.length; i++) {
-            if (pieces[i].equals(Piece.selected)) {
-                pieces[i] = p;
-                break;
-            }
-        }
+        piecesIndex = pieces.indexOf(Piece.selected);
+        pieces.set(piecesIndex,p);
+
+
         b.remove(Piece.selected.getButton());
         b.add(p.getButton());
         setBounds(sq.boardPosition,p.getButton());
@@ -168,10 +164,10 @@ public class Board {
     public static JButton castlingR = new JButton();
     public static JButton castlingL = new JButton();
     // This method activates the button depending on the team and the right/left side
-    public static void castlingButton(String side, Square a, Square b, Square c, Square d, Square e){
+    public static void castlingButton(String side, Square a, Square b, Square c, Square d, Square e) {
         JButton castling = ChessGame.getButton("<html><center>CASTLING</center></html>",0,0);
         int x, y;
-        if (side.equals("Right")){
+        if (side.equals("Right")) {
             x = 314;
             castlingR = castling;
         }
@@ -179,7 +175,7 @@ public class Board {
             x = 647;
             castlingL = castling;
         }
-        if (Player.getPlayer().equals(Player.white)){
+        if (Player.getPlayer().equals(Player.white)) {
             y = 900;
         }
         else{
@@ -188,7 +184,7 @@ public class Board {
         castling.setBounds(x,y,150,75);
 
         castling.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent f){
+            public void actionPerformed(ActionEvent f) {
                 if (e == null){
                     Move.castling(a, b, c, d);}
                 else {

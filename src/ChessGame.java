@@ -1,8 +1,6 @@
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class ChessGame {
     // In game menu window
@@ -22,59 +20,41 @@ public class ChessGame {
     }
 
     // Start menu with start and exit buttons
-    public static void startMenu(){
+    public static void startMenu() {
         JFrame startMenu = new JFrame();
         ImageIcon bg = new ImageIcon(new ImageIcon("src/images/StartMenu.png").getImage().getScaledInstance(500, 500, Image.SCALE_DEFAULT));
         JLabel background = new JLabel(bg);
         background.setBounds(0,0,500,500);
 
-        JButton start = getButton("START",75,190);
-        start.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                Player.white = new Player("White");
-                Player.black = new Player("Black");
-                new Board();
-                startMenu.dispose();
-            }
+        JButton exit = ChessGame.getButton("<html><center>x</center></html>",960,350);
+        exit.setBounds(470,5,25,25);
+        exit.setHorizontalTextPosition(SwingConstants.CENTER);
+        exit.addActionListener(e -> {
+            startMenu.dispose();
+            System.exit(0);
         });
 
-        JButton exit = getButton("EXIT",275,190);
-        exit.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e){
-                startMenu.dispose();
-                System.exit(0);
-            }
+        JButton start = getButton("2 PLAYERS",75,190);
+        start.addActionListener(e -> {
+            cpuMode = false;
+            Player.white = new Player("White");
+            Player.black = new Player("Black");
+            new Board();
+            startMenu.dispose();
         });
-        JLabel textCPU = new JLabel("<html><center>CPU DEACTIVATED</center></html>");
-        textCPU.setFont(new Font("Agency FB", Font.BOLD, 30));
-        textCPU.setBounds(166,365,170,60);
-        textCPU.setHorizontalTextPosition(SwingConstants.CENTER);
-        textCPU.setForeground(new Color(0, 0, 0));
-        textCPU.setVisible(true);
 
-        JButton activateCPU = ChessGame.getButton("<html><center>▢</center></html>",960,350);
-        activateCPU.setBounds(237,350,25,25);
-        activateCPU.setHorizontalTextPosition(SwingConstants.CENTER);
-        activateCPU.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                if (cpuMode){
-                    cpuMode = false;
-                    activateCPU.setText("<html><center>▢</center></html>");
-                    textCPU.setText("<html><center>CPU DEACTIVATED</center></html>");
-                    textCPU.setBounds(166,365,170,60);
-                }
-                else {
-                    cpuMode = true;
-                    activateCPU.setText("<html><center>▣</center></html>");
-                    textCPU.setText("<html><center>CPU ACTIVATED</center></html>");
-                    textCPU.setBounds(179,365,145,60);
-                }
-            }
+        JButton versusCpu = getButton("CPU MODE",275,190);
+        versusCpu.addActionListener(e -> {
+            cpuMode = true;
+            Player.white = new Player("White");
+            Player.black = new Player("Black");
+            new Board();
+            startMenu.dispose();
         });
-        startMenu.add(textCPU);
-        startMenu.add(activateCPU);
+
         startMenu.add(start);
         startMenu.add(exit);
+        startMenu.add(versusCpu);
         startMenu.add(background);
         startMenu.setUndecorated(true);
         startMenu.setLayout(null);
@@ -83,36 +63,30 @@ public class ChessGame {
         startMenu.setLocationRelativeTo(null);
     }
     // In game menu with resume, main menu and exit buttons
-    public static void inGameMenu(){
+    public static void inGameMenu() {
         inGameMenu = new JFrame();
         inGameMenu.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         JButton resume = getButton("RESUME",175,113);
-        resume.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                inGameMenu.setVisible(false);
-                Board.board.setEnabled(true);
-                Board.board.setLocationRelativeTo(null);
-                Board.board.setVisible(true);
-            }
+        resume.addActionListener(e -> {
+            inGameMenu.setVisible(false);
+            Board.board.setEnabled(true);
+            Board.board.setLocationRelativeTo(null);
+            Board.board.setVisible(true);
         });
 
         JButton mainMenu = getButton("MAIN MENU",175,213);
-        mainMenu.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                resetGame();
-                inGameMenu.setVisible(false);
-                startMenu();
-            }
+        mainMenu.addActionListener(e -> {
+            resetGame();
+            inGameMenu.setVisible(false);
+            startMenu();
         });
 
         JButton exit = getButton("EXIT",175,313);
-        exit.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e){
-                inGameMenu.dispose();
-                Board.board.dispose();
-                System.exit(0);
-            }
+        exit.addActionListener(e -> {
+            inGameMenu.dispose();
+            Board.board.dispose();
+            System.exit(0);
         });
 
         ImageIcon bg = new ImageIcon(new ImageIcon("src/images/InGameMenu.png").getImage().getScaledInstance(500, 500, Image.SCALE_DEFAULT));
@@ -131,17 +105,17 @@ public class ChessGame {
         inGameMenu.setVisible(false);
     }
     // Pause game method, it disables the board and shows the in game menu
-    public static void pauseGame(){
+    public static void pauseGame() {
         Board.board.setEnabled(false);
         inGameMenu.setVisible(true);
         inGameMenu.setEnabled(true);
         inGameMenu.setLocationRelativeTo(null);
     }
     // When main menu button or the play again button is pressed it resets the game variables
-    public static void resetGame(){
+    public static void resetGame() {
         Player.turn = "White";
         Board.board.setEnabled(true);
-        for (Piece p: Piece.getPieces()){
+        for (Piece p: Piece.getPieces()) {
             p.getButton().setVisible(false);
         }
         Square.deactivateAll();
@@ -149,7 +123,7 @@ public class ChessGame {
         Board.board.dispose();
     }
     // Game over menu with play gain and exit buttons
-    public static void gameOverMenu(){
+    public static void gameOverMenu() {
         gameOverMenu = new JFrame();
         ImageIcon bg = new ImageIcon(new ImageIcon("src/images/GameOver.png").getImage().getScaledInstance(500, 500, Image.SCALE_DEFAULT));
         JLabel background = new JLabel(bg);
@@ -162,23 +136,19 @@ public class ChessGame {
         winner.setVisible(true);
 
         JButton playAgain = getButton("PLAY AGAIN",50,280);
-        playAgain.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                resetGame();
-                Player.white = new Player("White");
-                Player.black = new Player("Black");
-                new Board();
-                gameOverMenu.setVisible(false);
-            }
+        playAgain.addActionListener(e -> {
+            resetGame();
+            Player.white = new Player("White");
+            Player.black = new Player("Black");
+            new Board();
+            gameOverMenu.setVisible(false);
         });
 
         JButton exit = getButton("EXIT",50,380);
-        exit.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e){
-                gameOverMenu.dispose();
-                Board.board.dispose();
-                System.exit(0);
-            }
+        exit.addActionListener(e -> {
+            gameOverMenu.dispose();
+            Board.board.dispose();
+            System.exit(0);
         });
         gameOverMenu.add(winner);
         gameOverMenu.add(playAgain);
@@ -191,14 +161,14 @@ public class ChessGame {
         gameOverMenu.setLocationRelativeTo(null);
     }
     // Game over method, it disables the board and shows the in game menu
-    public static void gameOver(String team){
+    public static void gameOver(String team) {
         Board.board.setEnabled(false);
-        winner.setText("<html><center>GAME OVER<br>" + team + "<br>WINS</center></html>");
+        winner.setText(STR."<html><center>GAME OVER<br>\{team}<br>WINS</center></html>");
         gameOverMenu.setVisible(true);
         gameOverMenu.setLocationRelativeTo(null);
     }
     // Method to build same style buttons
-    public static JButton getButton(String name, int x, int y){
+    public static JButton getButton(String name, int x, int y) {
         JButton button = new JButton(name);
         button.setBackground(new Color(35, 33, 32, 255));
         button.setForeground(Color.WHITE);

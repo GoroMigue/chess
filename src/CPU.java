@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class CPU{
@@ -15,7 +16,8 @@ public class CPU{
     public static Piece pieceCpu;
     public static JFrame cpuTurn;
 
-    public static void checkMove(){
+    public static void checkMove() {
+        cpu = true;
         SwingUtilities.invokeLater(() -> {
             Square.deactivateAll();
             cpuTurn.setVisible(true);
@@ -28,13 +30,12 @@ public class CPU{
         timer.setRepeats(false);
         timer.start();
     }
-    public static void runCPU(){
+    public static void runCPU() {
         score = -1;
-        cpu = true;
         CheckMate.checkingMate = true;
-        Piece [] pieces = Player.black.getPieces();
+        ArrayList<Piece> pieces = Player.black.getPieces();
         for (Piece p : pieces) {
-            Piece.selected = p; p.getName();
+            Piece.selected = p;
             Move.move(p);
         }
         CheckMate.checkingMate = false;
@@ -45,7 +46,7 @@ public class CPU{
         Square.teleportPiece(squareCpu);
         Square.deactivateAll();
     }
-    public static void score(Square square){
+    public static void score(Square square) {
         int squareScore = 0;
         Random rd = new Random();
         switch (square.getPiece().getName()) {
@@ -67,7 +68,9 @@ public class CPU{
             case "Pawn": squareScore += rd.nextInt(50); break;
             default:
         }
-        if (enemyCheck) {squareScore += 100;}
+        if (enemyCheck) {
+            squareScore += 100;
+        }
 
         if (squareScore > score && !square.equals(Square.neutralSquare)) {
             score = squareScore;
@@ -76,7 +79,7 @@ public class CPU{
         }
         enemyCheck = false;
     }
-    public static void buildFrame(){
+    public static void buildFrame() {
         cpuTurn = new JFrame();
         cpuTurn.setSize(300,170);
         cpuTurn.setLayout(null);

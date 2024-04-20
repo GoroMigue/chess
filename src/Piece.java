@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class Piece {
     // Static current selected piece
@@ -9,7 +8,7 @@ public class Piece {
     // Static neutralPiece, situated on every neutral square
     public static Piece neutralPiece = new Piece("Neutral","Neutral");
     // Array of pieces of the current game
-    private static Piece[] pieces;
+    private static ArrayList<Piece> pieces;
 //
     private String name;
     private String team;
@@ -20,7 +19,7 @@ public class Piece {
     private ImageIcon image;
     private JButton button;
 //
-    public Piece(String name){
+    public Piece(String name) {
         this.name = name;
         this.team = name;
     }
@@ -39,15 +38,15 @@ public class Piece {
         this.button.setBorder(null);
         this.button.setContentAreaFilled(false);
         this.button.setFocusPainted(false);
-        this.button.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e){
+        this.button.addActionListener(e -> {
+            if (!CPU.cpu){
                 Board.castlingR.setVisible(false);
                 Board.castlingL.setVisible(false);
-                if (Board.promoting){
+                if (Board.promoting) {
                     Board.promotePawn(Piece.this);
                 }
                 else{
-                    if (Piece.selected.equals(Piece.this)){
+                    if (Piece.selected.equals(Piece.this)) {
                         Square.deactivateAll();
                         selected = Piece.neutralPiece;
                     }
@@ -58,9 +57,10 @@ public class Piece {
                         System.out.println(selected.getName() + " " + Piece.this.team);
                     }
                 }
-            }});
+            }
+        });
         Board.position++;
-        if (Board.position == 16){
+        if (Board.position == 16) {
             Board.position = 48;
         }
     }
@@ -88,38 +88,37 @@ public class Piece {
     }
 //
     // Return all pieces of the current game
-    public static Piece[] getPieces(){
+    public static ArrayList<Piece> getPieces() {
         return pieces;
     }
 //
-    public static void piecesBuilder(){
-        pieces = new Piece[32];
+    public static void piecesBuilder() {
+        pieces = new ArrayList<>();
         Board.position = 0;
         //BLACK TEAM
-        pieces[0] = new Piece("Rook","Black");
-        pieces[1] = new Piece("Knight","Black");
-        pieces[2] = new Piece("Bishop","Black");
-        pieces[3] = new Piece("Queen","Black");
-        pieces[4] = new Piece("King","Black");
-        pieces[5] = new Piece("Bishop","Black");
-        pieces[6] = new Piece("Knight","Black");
-        pieces[7] = new Piece("Rook","Black");
-        for (int i = 8; i <= 15; i++){
-            pieces [i] = new Piece("Pawn","Black");
+        pieces.add(new Piece("Rook","Black"));
+        pieces.add(new Piece("Knight","Black"));
+        pieces.add(new Piece("Bishop","Black"));
+        pieces.add(new Piece("Queen","Black"));
+        pieces.add(new Piece("King","Black"));
+        pieces.add(new Piece("Bishop","Black"));
+        pieces.add(new Piece("Knight","Black"));
+        pieces.add(new Piece("Rook","Black"));
+        for (int i = 8; i <= 15; i++) {
+            pieces.add(new Piece("Pawn","Black"));
         }
         //WHITE TEAM
-        for (int i = 16; i <= 23; i++){
-            pieces [i] = new Piece("Pawn","White");
+        for (int i = 16; i <= 23; i++) {
+            pieces.add(new Piece("Pawn","White"));
         }
-        pieces[24] = new Piece("Rook","White");
-        pieces[25] = new Piece("Knight","White");
-        pieces[26] = new Piece("Bishop","White");
-        pieces[27] = new Piece("Queen","White");
-        pieces[28] = new Piece("King","White");
-        pieces[29] = new Piece("Bishop","White");
-        pieces[30] = new Piece("Knight","White");
-        pieces[31] = new Piece("Rook","White");
-
+        pieces.add(new Piece("Rook","White"));
+        pieces.add(new Piece("Knight","White"));
+        pieces.add(new Piece("Bishop","White"));
+        pieces.add(new Piece("Queen","White"));
+        pieces.add(new Piece("King","White"));
+        pieces.add(new Piece("Bishop","White"));
+        pieces.add(new Piece("Knight","White"));
+        pieces.add(new Piece("Rook","White"));
 
         selected = new Piece("Selected");
     }

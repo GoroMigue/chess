@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class CheckMate {
     // When the team king is in check
     public static boolean teamCheck;
@@ -13,11 +15,11 @@ public class CheckMate {
     // It checks every enemy piece movement to verify if team king is in check
     public static void check() {
         checking = true;
-        Piece[] pieces;
+        ArrayList<Piece> pieces;
         if (CPU.cpu) {
             pieces = Piece.getPieces();
         }
-        else if (Player.getPlayer().equals(Player.white)){
+        else if (Player.getPlayer().equals(Player.white)) {
             pieces = Player.black.getPieces();
         }
         else {
@@ -38,7 +40,7 @@ public class CheckMate {
         checkingMate = true;
         teamCheck = false;
         checkMove = false;
-        Piece[] pieces = Player.getPlayer().getPieces();
+        ArrayList<Piece> pieces = Player.getPlayer().getPieces();
         for (Piece p : pieces) {
             Move.move(p);
             if (checkMove) {
@@ -46,6 +48,9 @@ public class CheckMate {
             }
         }
         Square.deactivateAll();
+        if (Player.getPlayer().getPieces().size() == 1) {
+            checkMove = false;
+        }
         if (!checkMove) {
             ChessGame.cpuMode = false;
             String team = "";

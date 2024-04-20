@@ -1,4 +1,4 @@
-import java.util.Arrays;
+import java.util.ArrayList;
 
 public class Player {
     // Static reference of each player
@@ -8,30 +8,37 @@ public class Player {
     public static String turn = "White";
 //
     private String team;
-    private Piece [] teamPieces;
+    private ArrayList<Piece> teamPieces;
 //
     public Player(String team){
         this.team = team;
-        this.teamPieces = new Piece[16];
     }
 //
-    public void kill(Piece p){
+    public void kill(Piece p) {
         p.setMove();
         p.getButton().setEnabled(false);
         p.getButton().setVisible(false);
+        Piece.getPieces().remove(p);
+        if (p.getTeam().equals("White")) {
+            white.teamPieces.remove(p);
+        }
+        else{
+            black.teamPieces.remove(p);
+        }
     }
-    public Piece[] getPieces(){
+    public ArrayList<Piece> getPieces(){
         return teamPieces;
     }
 //
     // Set each tam pieces
-    public static void setPieces(){
-        black.teamPieces = Arrays.copyOfRange(Piece.getPieces(), 0, 16);
-        white.teamPieces = Arrays.copyOfRange(Piece.getPieces(), 16, 32);
+    public static void setPieces() {
+        ArrayList<Piece> pieces = Piece.getPieces();
+        black.teamPieces = new ArrayList<>(pieces.subList(0, pieces.size() / 2));
+        white.teamPieces = new ArrayList<>(pieces.subList(pieces.size() / 2, pieces.size()));
     }
     // Getter for the current player turn
-    public static Player getPlayer(){
-        if (turn.equals("White")){
+    public static Player getPlayer() {
+        if (turn.equals("White")) {
             return white;
         }
         else {
@@ -39,10 +46,10 @@ public class Player {
         }
     }
     // Method that changes turn, it calls to checkmate method to verify the situation
-    public static void nextTurn(){
+    public static void nextTurn() {
         Board.castlingR.setVisible(false);
         Board.castlingL.setVisible(false);
-        if (turn.equals("White")){
+        if (turn.equals("White")) {
             turn = "Black";
         }
         else {
@@ -50,6 +57,8 @@ public class Player {
         }
         CheckMate.checkMate();
 
-        if (ChessGame.cpuMode && turn.equals("Black")){CPU.checkMove();}
+        if (ChessGame.cpuMode && turn.equals("Black")) {
+            CPU.checkMove();
+        }
     }
 }
