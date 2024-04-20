@@ -51,3 +51,12 @@
     <li><b>.jar:</b> download the .jar file, open your console, execute command "java -jar ChessGame.jar" and play.</li><br>
   </ul>
 </div>
+
+# Image gallery
+<div align="center">
+  <img src="https://github.com/GoroMigue/chess/assets/162487939/e1a342dd-2b40-4fd2-bbab-5881d328732b" alt="Descripción de la imagen" width="500"/>
+  <img src="https://github.com/GoroMigue/chess/assets/162487939/548dccf0-48ca-4dad-bf27-d6c7d9599d94" alt="Descripción de la imagen" width="500"/>
+  <img src="https://github.com/GoroMigue/chess/assets/162487939/f90440eb-91ba-4462-9816-ae9a762bb64c" alt="Descripción de la imagen" width="500"/>
+  <img src="https://github.com/GoroMigue/chess/assets/162487939/17e49906-2956-4fa1-85d0-ea1aefb1aa78" alt="Descripción de la imagen" width="500"/>
+</div>
+
