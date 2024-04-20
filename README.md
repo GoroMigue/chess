@@ -1,4 +1,4 @@
-<div align="center""><img src="https://github.com/GoroMigue/chess/assets/162487939/faa585d5-6a3c-4aba-a3ff-3ae076f637ea.png" alt="Descripción de la imagen" width="500"/></div>
+<div align="center"><img src="https://github.com/GoroMigue/chess/assets/162487939/faa585d5-6a3c-4aba-a3ff-3ae076f637ea.png" alt="Descripción de la imagen" width="500"/></div>
 
 # ABOUT THE PROJECT
 
@@ -15,6 +15,11 @@
 
 <div align="justify">
   <ul>
+    <li><b>Modes:</b></li>
+        <ul>
+            <li><b>2 Players:</b> play with your friends in the same computer.</li>
+        <li><b>CPU mode:</b> play against CPU.</li><br>
+        </ul>
     <li><b>Board:</b> GUI logic using Java Swing with an array as map.</li><br>
     <li><b>Pieces:</b> with attributes to check their team, if it's their first move and en passant situations.</li><br>
     <li><b>Squares:</b> with rank and file attributes, and board position linked to the board map.</li><br>
@@ -34,5 +39,15 @@
         <li><b>Game over menu:</b> it declares the winner and has buttons to start another game or exit the application.</li>
       </ul>
     </li>
+  </ul>
+
+</div>
+
+# Instalation guide:
+
+<div align="justify">
+  <ul>
+    <li><b>.exe:</b> download the .exe file, execute it with double click and play.</li><br>
+    <li><b>.jar:</b> download the .jar file, open your console, execute command "java -jar ChessGame.jar" and play.</li><br>
   </ul>
 </div>

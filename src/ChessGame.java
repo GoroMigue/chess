@@ -1,6 +1,7 @@
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import java.awt.*;
+import java.net.URL;
 
 public class ChessGame {
     // In game menu window
@@ -22,6 +23,9 @@ public class ChessGame {
     // Start menu with start and exit buttons
     public static void startMenu() {
         JFrame startMenu = new JFrame();
+        URL image = ChessGame.class.getResource("/images/StartMenu.png");
+
+
         ImageIcon bg = new ImageIcon(new ImageIcon("src/images/StartMenu.png").getImage().getScaledInstance(500, 500, Image.SCALE_DEFAULT));
         JLabel background = new JLabel(bg);
         background.setBounds(0,0,500,500);
@@ -138,10 +142,8 @@ public class ChessGame {
         JButton playAgain = getButton("PLAY AGAIN",50,280);
         playAgain.addActionListener(e -> {
             resetGame();
-            Player.white = new Player("White");
-            Player.black = new Player("Black");
-            new Board();
             gameOverMenu.setVisible(false);
+            startMenu();
         });
 
         JButton exit = getButton("EXIT",50,380);
